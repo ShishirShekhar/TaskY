@@ -119,6 +119,14 @@ const saveEdit = (event) => {
     const tasktype = parentElement.childNodes[1].childNodes[11].childNodes[5];
     const submit = parentElement.childNodes[1].childNodes[15].childNodes[1];
 
+    const openTasktitle = parentElement.childNodes[3].childNodes[3].childNodes[1].childNodes[1].childNodes[3].childNodes[3];
+    const openTaskdes = parentElement.childNodes[3].childNodes[3].childNodes[1].childNodes[1].childNodes[7].childNodes[3];
+    const openTasktype = parentElement.childNodes[3].childNodes[3].childNodes[1].childNodes[1].childNodes[7].childNodes[5];
+
+    openTasktitle.innerHTML = tasktitle.innerHTML;
+    openTaskdes.innerHTML = taskdes.innerHTML;
+    openTasktype.innerHTML = tasktype.innerHTML;
+
     const updateData = {
         title: tasktitle.innerHTML,
         type: tasktype.innerHTML,
@@ -126,7 +134,6 @@ const saveEdit = (event) => {
     };
 
     globalTaskData = globalTaskData.map((task) => {
-        console.log(targetID)
         if (task.id == targetID) {
             return {...task, ...updateData};
         }
@@ -184,7 +191,54 @@ const generateHTML = (taskData) => {
 
             <!-- Card footer. -->
             <div class="card-footer">
-                <button class="btn btn-outline-primary" name=${taskData.id}>Open Task</button>
+                <button class="btn btn-outline-primary" name=${taskData.id}
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal${taskData.id}"
+                        >Open Task
+                </button>
+            </div>
+
+        </div>
+
+        <div class="openTaskModal">
+
+            <!-- Open Task Modal -->
+            <div class="modal fade" 
+                id="modal${taskData.id}" tabindex="-1" 
+                role="dialog" aria-labelledby="openTaskTitle"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+
+                        <!-- Modal header. -->
+                        <div class="modal-header">
+                            <!-- Modal Title -->
+                            <h5 class="modal-title" id="openTaskTitle">${taskData.title}</h5>
+                            <!-- Close button -->
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close">
+                            </button>
+                        </div>
+
+                        <!-- Modal Body -->
+                        <div class="modal-body">
+                            <img src="${taskData.img}" class="card-img" alt="TaskY">
+                            <p class="card-text">${taskData.des}</p>
+                            <span class="badge bg-primary">${taskData.type}</span>
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <div class="modal-footer .d-flex justify-content-center">
+                            <button type="button" 
+                                    class="btn btn-secondary" 
+                                    data-bs-dismiss="modal">Close
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
         </div>
